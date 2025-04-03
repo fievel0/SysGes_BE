@@ -1,20 +1,15 @@
-# Usa una imagen base de Maven con JDK 11 (puedes cambiar la versión según sea necesario)
-FROM maven:3.8.6-openjdk-11-slim AS build
+# Use the Eclipse temurin alpine official image
+# https://hub.docker.com/_/eclipse-temurin
+FROM eclipse-temurin:21-jdk-alpine
 
-# Establece el directorio de trabajo dentro del contenedor
+# Create and change to the app directory.
 WORKDIR /app
 
-# Copia el código fuente de tu proyecto al contenedor
-COPY . /app
+# Copy local code to the container image.
+COPY . ./
 
-# Da permisos de ejecución al script mvnw (si es necesario en un entorno Linux)
-RUN chmod +x ./mvnw
+# Build the app.
+RUN ./mvnw -DoutputFile=target/mvn-dependency-list.log -B -DskipTests clean dependency:list install
 
-# Ejecuta Maven para descargar las dependencias e instalar los artefactos
-RUN ./mvnw clean dependency:list install
-
-# Expone el puerto 8080 (si tu aplicación usa este puerto)
-EXPOSE 8080
-
-# Comando para ejecutar tu aplicación (ajusta según tu proyecto)
-CMD ["java", "-jar", "target/mi-aplicacion.jar"]
+# Run the app by dynamically finding the JAR file in the target directory
+CMD ["sh", "-c", "java -jar target/*.jar"]
