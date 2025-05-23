@@ -56,7 +56,7 @@ public class SecurityConfigurations {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("https://sysgesfe-production.up.railway.app"));
+        configuration.setAllowedOrigins(Arrays.asList("https://equipos.int-solutionstec.com/"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Métodos permitidos
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type")); // Encabezados permitidos
         configuration.setAllowCredentials(true);
